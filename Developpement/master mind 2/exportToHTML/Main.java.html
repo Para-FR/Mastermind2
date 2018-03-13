@@ -1,0 +1,538 @@
+<html>
+<head>
+<title>Main.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(204,120,50); }
+.s3 { color: rgb(104,151,187); }
+.s4 { color: rgb(106,135,89); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+Main.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">// import com.sun.deploy.util.ArrayUtil;</span><span class="s1"> 
+ 
+</span><span class="s2">import </span><span class="s1">java.lang.reflect.Array</span><span class="s2">;</span><span class="s1"> 
+</span><span class="s2">import </span><span class="s1">java.util.*</span><span class="s2">;</span><span class="s1"> 
+ 
+</span><span class="s2">public class </span><span class="s1">Main { 
+ 
+    </span><span class="s2">public static void </span><span class="s1">main(String[] args) { 
+        Boolean gagné = </span><span class="s2">false;</span><span class="s1"> 
+        Scanner sc = </span><span class="s2">new </span><span class="s1">Scanner(System.in)</span><span class="s2">;</span><span class="s1"> 
+        Case[] tabCase = </span><span class="s2">new </span><span class="s1">Case[</span><span class="s3">5</span><span class="s1">]</span><span class="s2">;</span><span class="s1"> 
+        tabCase[</span><span class="s3">0</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Case()</span><span class="s2">;</span><span class="s1"> 
+        tabCase[</span><span class="s3">1</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Case()</span><span class="s2">;</span><span class="s1"> 
+        tabCase[</span><span class="s3">2</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Case()</span><span class="s2">;</span><span class="s1"> 
+        tabCase[</span><span class="s3">3</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Case()</span><span class="s2">;</span><span class="s1"> 
+        tabCase[</span><span class="s3">4</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Case()</span><span class="s2">;</span><span class="s1"> 
+        </span><span class="s2">boolean </span><span class="s1">secResult = </span><span class="s2">false;</span><span class="s1"> 
+        BDD database = </span><span class="s2">new </span><span class="s1">BDD(</span><span class="s4">&quot;root&quot;</span><span class="s2">, </span><span class="s4">&quot;&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+ 
+        </span><span class="s2">boolean </span><span class="s1">connected = database.testConnect()</span><span class="s2">;</span><span class="s1"> 
+        </span><span class="s2">while </span><span class="s1">(!connected) { 
+            System.out.println(</span><span class="s4">&quot;Merci de rentrer votre username: &quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+            String login = sc.next()</span><span class="s2">;</span><span class="s1"> 
+            database.setUsername(login)</span><span class="s2">;</span><span class="s1"> 
+            System.out.print(</span><span class="s4">&quot;Merci de rentrer votre password: &quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+            String password = sc.next()</span><span class="s2">;</span><span class="s1"> 
+            database.setPassword(password)</span><span class="s2">;</span><span class="s1"> 
+            connected = database.testConnect()</span><span class="s2">;</span><span class="s1"> 
+ 
+            </span><span class="s2">if </span><span class="s1">(!connected) 
+                System.out.println(</span><span class="s4">&quot;Ça marche toujours pas!!!&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+ 
+ 
+        } 
+ 
+        String usernameOnline = </span><span class="s4">&quot;&quot;</span><span class="s2">;</span><span class="s1"> 
+ 
+ 
+        database.createBDD()</span><span class="s2">;</span><span class="s1"> 
+        database.connectBDD()</span><span class="s2">;</span><span class="s1"> 
+        database.createUsersTable()</span><span class="s2">;</span><span class="s1"> 
+        database.createStatsTable()</span><span class="s2">;</span><span class="s1"> 
+        String theNick = </span><span class="s4">&quot;&quot;</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;Voulez vous jouer a Mastermind ? Il faut se connecter ou créer un compte.&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;Avez vous un compte ? o/n: &quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+        String testCo = sc.next()</span><span class="s2">;</span><span class="s1"> 
+        </span><span class="s2">if </span><span class="s1">(testCo.equals(</span><span class="s4">&quot;n&quot;</span><span class="s1">)) { 
+            Boolean in = database.insertAccount()</span><span class="s2">;</span><span class="s1"> 
+        } </span><span class="s2">else </span><span class="s1">{ 
+            </span><span class="s2">while </span><span class="s1">(!secResult) { 
+                System.out.println(</span><span class="s4">&quot;Pour vous connecter: &quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                System.out.println(</span><span class="s4">&quot;Entrer un nom d'utilisateur: </span><span class="s2">\n</span><span class="s4">&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                theNick = sc.next()</span><span class="s2">;</span><span class="s1"> 
+                Boolean result = database.select(</span><span class="s4">&quot;nickname&quot;</span><span class="s2">, </span><span class="s4">&quot;users&quot;</span><span class="s2">, </span><span class="s1">theNick)</span><span class="s2">;</span><span class="s1"> 
+                </span><span class="s2">if </span><span class="s1">(result == </span><span class="s2">true</span><span class="s1">) { 
+                    System.out.print(</span><span class="s4">&quot;Entrer un mot de passe: </span><span class="s2">\n</span><span class="s4">&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                    String thePass = sc.next()</span><span class="s2">;</span><span class="s1"> 
+                    secResult = database.select(</span><span class="s4">&quot;password&quot;</span><span class="s2">, </span><span class="s4">&quot;users&quot;</span><span class="s2">, </span><span class="s1">thePass)</span><span class="s2">;</span><span class="s1"> 
+                    usernameOnline = theNick</span><span class="s2">;</span><span class="s1"> 
+ 
+                } 
+                </span><span class="s2">if </span><span class="s1">(result == </span><span class="s2">false </span><span class="s1">|| secResult == </span><span class="s2">false</span><span class="s1">) { 
+                    System.out.println(</span><span class="s4">&quot;Mot de passe ou identifiant incorrect.&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                } 
+            } 
+ 
+        } 
+</span><span class="s2">boolean </span><span class="s1">leave=</span><span class="s2">true;</span><span class="s1"> 
+        </span><span class="s2">while</span><span class="s1">(leave) 
+        {System.out.println(</span><span class="s4">&quot;Master mind: Bienvenue &quot; </span><span class="s1">+ theNick)</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;1 : Je choisis la combinaison, vous jouez.&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;2 : Vous choisissez la combinaison, je joue.&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;3 : Afficher votre profil.&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;4 : Modifier vos informations.&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;5 : Afficher les statistiques.&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+        System.out.println(</span><span class="s4">&quot;6 : Quitter&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+ 
+        String choix = sc.next()</span><span class="s2">;</span><span class="s1"> 
+ 
+        </span><span class="s0">/*if(choix.equals(&quot;5&quot;)) 
+            database.showStats(theNick); 
+ 
+        else if(choix.equals(&quot;3&quot;)) 
+            database.showProfile(theNick);*/</span><span class="s1"> 
+ 
+ 
+        </span><span class="s2">if </span><span class="s1">(choix.equals(</span><span class="s4">&quot;4&quot;</span><span class="s1">)) { 
+            System.out.println(</span><span class="s4">&quot;Voulez-vous modifier vos informations ? o/n: &quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+            String newTest = sc.next()</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">if </span><span class="s1">(newTest.equals(</span><span class="s4">&quot;o&quot;</span><span class="s1">)) { 
+                database.updateAccount(usernameOnline)</span><span class="s2">;</span><span class="s1"> 
+            } 
+        } 
+ 
+ 
+        </span><span class="s2">else if </span><span class="s1">(choix.equals(</span><span class="s4">&quot;1&quot;</span><span class="s1">)) { 
+            </span><span class="s0">///System.out.println(&quot;je suis passé ici&quot;);</span><span class="s1"> 
+            String[] aCherher = </span><span class="s2">new </span><span class="s1">String[</span><span class="s3">5</span><span class="s1">]</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s0">//String[] tabCouleursDispo= {&quot;Jaune&quot;,&quot;Bleu&quot;,&quot;Rouge&quot;,&quot;Vert&quot;,&quot;White&quot;,&quot;Noir&quot;};</span><span class="s1"> 
+            String[] tabCouleursDispo = {</span><span class="s4">&quot;1&quot;</span><span class="s2">, </span><span class="s4">&quot;2&quot;</span><span class="s2">, </span><span class="s4">&quot;3&quot;</span><span class="s2">, </span><span class="s4">&quot;4&quot;</span><span class="s2">, </span><span class="s4">&quot;5&quot;</span><span class="s2">, </span><span class="s4">&quot;6&quot;</span><span class="s2">, </span><span class="s4">&quot;7&quot;</span><span class="s2">, </span><span class="s4">&quot;8&quot;</span><span class="s2">, </span><span class="s4">&quot;9&quot;</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">i &lt; </span><span class="s3">5</span><span class="s2">; </span><span class="s1">i++) { 
+                Random r = </span><span class="s2">new </span><span class="s1">Random()</span><span class="s2">;</span><span class="s1"> 
+                </span><span class="s2">int </span><span class="s1">valeur = r.nextInt(tabCouleursDispo.length)</span><span class="s2">;</span><span class="s1"> 
+                aCherher[i] = tabCouleursDispo[valeur]</span><span class="s2">;</span><span class="s1"> 
+            } 
+            </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">i &lt; aCherher.length</span><span class="s2">; </span><span class="s1">i++) </span><span class="s0">//affichage du résultat du master mind</span><span class="s1"> 
+            { 
+                System.out.print(aCherher[i] + </span><span class="s4">&quot;|&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+            } 
+            System.out.println(</span><span class="s4">&quot;Règles de jeu: Vous devez deviner les couleurs qui peuvent être : Jaune Bleu Rouge Vert White ou Noir&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+            System.out.println(</span><span class="s4">&quot;Il faut mettre la première lettre seulement, par exemple JWRN pour jaune White rouge noir&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+            System.out.println(</span><span class="s4">&quot;Vous avez 10 essais&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+            String[] numériques = {</span><span class="s4">&quot;premier&quot;</span><span class="s2">, </span><span class="s4">&quot;deuxième&quot;</span><span class="s2">, </span><span class="s4">&quot;troisième&quot;</span><span class="s2">, </span><span class="s4">&quot;quatrième&quot;</span><span class="s2">, </span><span class="s4">&quot;cinquième&quot;</span><span class="s2">, </span><span class="s4">&quot;sixième&quot;</span><span class="s2">, </span><span class="s4">&quot;septième&quot;</span><span class="s2">, </span><span class="s4">&quot;huitième&quot;</span><span class="s2">, </span><span class="s4">&quot;neuvième&quot;</span><span class="s2">, </span><span class="s4">&quot;dixième et ultime&quot;</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+            String retour = </span><span class="s4">&quot;&quot;</span><span class="s2">;</span><span class="s1"> 
+ 
+ 
+            </span><span class="s2">int</span><span class="s1">[] MP = {</span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int</span><span class="s1">[] BP = {</span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+ 
+            </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">i &lt; </span><span class="s3">10</span><span class="s2">; </span><span class="s1">i++) </span><span class="s0">//pour les 10 essais</span><span class="s1"> 
+            { 
+ 
+                List tabBP = </span><span class="s2">new </span><span class="s1">ArrayList()</span><span class="s2">;</span><span class="s1"> 
+                List TabFaux = </span><span class="s2">new </span><span class="s1">ArrayList()</span><span class="s2">;</span><span class="s1"> 
+                List TabMP = </span><span class="s2">new </span><span class="s1">ArrayList()</span><span class="s2">;</span><span class="s1"> 
+                TabFaux.clear()</span><span class="s2">;</span><span class="s1"> 
+ 
+                </span><span class="s2">int </span><span class="s1">rounds = i</span><span class="s2">;</span><span class="s1"> 
+                System.out.print(</span><span class="s4">&quot;Merci de rentrer votre &quot; </span><span class="s1">+ numériques[i] + </span><span class="s4">&quot; essai: &quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                String essai = sc.next().toUpperCase()</span><span class="s2">;</span><span class="s1"> 
+ 
+                </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">j = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">j &lt; </span><span class="s3">5</span><span class="s2">; </span><span class="s1">j++) </span><span class="s0">//pour chaque pièce</span><span class="s1"> 
+                { 
+                    </span><span class="s2">if </span><span class="s1">(essai.charAt(j) == aCherher[j].charAt(</span><span class="s3">0</span><span class="s1">)) </span><span class="s0">//couleur bien placée</span><span class="s1"> 
+                    { 
+                        </span><span class="s0">//System.out.print(&quot;Correspondance trouvé à &quot;+i);</span><span class="s1"> 
+                        tabCase[j].setTrouvé(aCherher[j])</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s0">//System.out.print(tabCase[i].getCouleur());</span><span class="s1"> 
+                        BP[i]++</span><span class="s2">;</span><span class="s1"> 
+                    } </span><span class="s2">else </span><span class="s1">{ 
+ 
+                        TabFaux.add(j)</span><span class="s2">;</span><span class="s1"> 
+                    } 
+ 
+                } 
+ 
+                </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">j = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">j &lt; TabFaux.size()</span><span class="s2">; </span><span class="s1">j++) 
+ 
+                { 
+                    </span><span class="s0">//System.out.println(TabFaux.toString());</span><span class="s1"> 
+                    </span><span class="s2">int </span><span class="s1">index = Integer.parseInt(TabFaux.get(j).toString())</span><span class="s2">;</span><span class="s1"> 
+                    </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">y = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">y &lt; </span><span class="s3">5</span><span class="s2">; </span><span class="s1">y++)    </span><span class="s0">//check si la couleur est dans d'autre emplacements</span><span class="s1"> 
+                    { 
+                        System.out.println(</span><span class="s4">&quot;Juste mal placé&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                        System.out.println(</span><span class="s4">&quot;Essai entre :&quot; </span><span class="s1">+ essai.charAt(index) + </span><span class="s4">&quot; et &quot; </span><span class="s1">+ aCherher[y].charAt(</span><span class="s3">0</span><span class="s1">))</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">if </span><span class="s1">(y != index &amp;&amp; essai.charAt(index) == aCherher[y].charAt(</span><span class="s3">0</span><span class="s1">) &amp;&amp; !tabCase[y].getTrouvé()) </span><span class="s0">//si la couleur est mal placée et index différent d'une réussite</span><span class="s1"> 
+ 
+                        { 
+                            </span><span class="s0">// System.out.println(aCherher[y]);</span><span class="s1"> 
+                            System.out.println(</span><span class="s4">&quot;Juste mal placé&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                            MP[i]++</span><span class="s2">;</span><span class="s1"> 
+                            </span><span class="s2">break;</span><span class="s1"> 
+                        } 
+                    } 
+                } 
+                System.out.println(</span><span class="s4">&quot;BP: &quot; </span><span class="s1">+ BP[i] + </span><span class="s4">&quot; MP: &quot; </span><span class="s1">+ MP[i])</span><span class="s2">;</span><span class="s1"> 
+                </span><span class="s2">if </span><span class="s1">(BP[i] == </span><span class="s3">5</span><span class="s1">) { 
+                    System.out.println(</span><span class="s4">&quot;BRAVO C'EST GAGNE&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                    gagné = !gagné</span><span class="s2">;</span><span class="s1"> 
+                    database.insertStats(</span><span class="s3">1</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s1">i</span><span class="s2">, </span><span class="s1">usernameOnline)</span><span class="s2">;</span><span class="s1"> 
+                    </span><span class="s2">break;</span><span class="s1"> 
+                } 
+ 
+            } 
+            </span><span class="s2">if </span><span class="s1">(!gagné) { 
+                System.out.println(</span><span class="s4">&quot;C'est perdu, dommage!&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                database.insertStats(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">1</span><span class="s2">, </span><span class="s3">10</span><span class="s2">, </span><span class="s1">usernameOnline)</span><span class="s2">;</span><span class="s1"> 
+            } 
+        } 
+ 
+ 
+        </span><span class="s0">//////////////////////////////////////////////////////////////////////</span><span class="s1"> 
+ 
+ 
+        </span><span class="s2">else if </span><span class="s1">(choix.equals(</span><span class="s4">&quot;2&quot;</span><span class="s1">)) </span><span class="s0">//invocation de l'IA en cours de prog</span><span class="s1"> 
+        { 
+ 
+            List&lt;String&gt; lastThreeCaracters = </span><span class="s2">new </span><span class="s1">ArrayList&lt;String&gt;()</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">aide = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">test = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            String[] nbtest = </span><span class="s2">new </span><span class="s1">String[</span><span class="s3">3</span><span class="s1">]</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">decalage = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">boolean</span><span class="s1">[] tabBool = {</span><span class="s2">true, true, true, true</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">nbMCouleur = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">v9 = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">v12 = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">v34 = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">v56 = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">v78 = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            Couleur[] tabMauvaiseCouleur = </span><span class="s2">new </span><span class="s1">Couleur[</span><span class="s3">9</span><span class="s1">]</span><span class="s2">;</span><span class="s1"> 
+            Couleur[] tabCouleur = </span><span class="s2">new </span><span class="s1">Couleur[</span><span class="s3">10</span><span class="s1">]</span><span class="s2">;</span><span class="s1"> 
+            String nul = </span><span class="s4">&quot;&quot;</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">tmp</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">avancement = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">debut = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int</span><span class="s1">[] MP = {</span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int</span><span class="s1">[] BP = {</span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">recherche = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">int </span><span class="s1">reroll = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+            </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">i &lt; </span><span class="s3">10</span><span class="s2">; </span><span class="s1">i++) </span><span class="s0">//boucle principale</span><span class="s1"> 
+            { 
+                </span><span class="s0">// System.out.println(&quot;Avancement :&quot;+avancement);</span><span class="s1"> 
+                String proposition = </span><span class="s4">&quot;&quot;</span><span class="s2">;</span><span class="s1"> 
+                </span><span class="s2">if </span><span class="s1">(avancement &lt; </span><span class="s3">4</span><span class="s1">) { 
+                    </span><span class="s2">if </span><span class="s1">(avancement == </span><span class="s3">0</span><span class="s1">) { 
+                        proposition = </span><span class="s4">&quot;11222&quot;</span><span class="s2">;</span><span class="s1"> 
+                        avancement++</span><span class="s2">;</span><span class="s1"> 
+                    } </span><span class="s2">else if </span><span class="s1">(avancement == </span><span class="s3">1</span><span class="s1">) { 
+                        proposition = </span><span class="s4">&quot;33444&quot;</span><span class="s2">;</span><span class="s1"> 
+                        avancement++</span><span class="s2">;</span><span class="s1"> 
+                    } </span><span class="s2">else if </span><span class="s1">(avancement == </span><span class="s3">2</span><span class="s1">) { 
+                        proposition = </span><span class="s4">&quot;55666&quot;</span><span class="s2">;</span><span class="s1"> 
+                        avancement++</span><span class="s2">;</span><span class="s1"> 
+                    } </span><span class="s2">else if </span><span class="s1">(avancement == </span><span class="s3">3</span><span class="s1">) { 
+                        proposition = </span><span class="s4">&quot;77888&quot;</span><span class="s2">;</span><span class="s1"> 
+                        avancement = </span><span class="s3">5</span><span class="s2">;</span><span class="s1"> 
+                    } 
+                } </span><span class="s2">else </span><span class="s1">{ 
+ 
+                    </span><span class="s2">if </span><span class="s1">(avancement == </span><span class="s3">5</span><span class="s1">) { 
+                        recherche = i</span><span class="s2">;</span><span class="s1"> 
+                        v9 = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+                        tmp = MP[</span><span class="s3">0</span><span class="s1">] + BP[</span><span class="s3">0</span><span class="s1">] + MP[</span><span class="s3">1</span><span class="s1">] + BP[</span><span class="s3">1</span><span class="s1">] + MP[</span><span class="s3">2</span><span class="s1">] + BP[</span><span class="s3">2</span><span class="s1">] + MP[</span><span class="s3">3</span><span class="s1">] + BP[</span><span class="s3">3</span><span class="s1">]</span><span class="s2">;</span><span class="s1"> 
+ 
+ 
+                        v12 = MP[</span><span class="s3">0</span><span class="s1">] + BP[</span><span class="s3">0</span><span class="s1">]</span><span class="s2">;    </span><span class="s0">//nombre de 1/2</span><span class="s1"> 
+                        v34 = MP[</span><span class="s3">1</span><span class="s1">] + BP[</span><span class="s3">1</span><span class="s1">]</span><span class="s2">;    </span><span class="s0">//nombre de 3/4</span><span class="s1"> 
+                        v56 = MP[</span><span class="s3">2</span><span class="s1">] + BP[</span><span class="s3">2</span><span class="s1">]</span><span class="s2">;    </span><span class="s0">//nombre de 5/6</span><span class="s1"> 
+                        v78 = MP[</span><span class="s3">3</span><span class="s1">] + BP[</span><span class="s3">3</span><span class="s1">]</span><span class="s2">;    </span><span class="s0">//nombre de 7/8</span><span class="s1"> 
+                        v9 = </span><span class="s3">5 </span><span class="s1">- v12 - v34 - v56 - v78</span><span class="s2">;             </span><span class="s0">//nombre de 9</span><span class="s1"> 
+                        </span><span class="s0">/*System.out.println(&quot;il peut y avoir &quot; + v12 + &quot; 1 ou 2&quot;); 
+                        System.out.println(&quot;il peut y avoir &quot; + v34 + &quot; 3 ou 4&quot;); 
+                        System.out.println(&quot;il peut y avoir &quot; + v56 + &quot; 5 ou 6&quot;); 
+                        System.out.println(&quot;il peut y avoir &quot; + v78 + &quot; 7 ou 8&quot;); 
+                        System.out.println(&quot;il peut y avoir &quot; + v9 + &quot; 9&quot;);*/</span><span class="s1"> 
+                        avancement++</span><span class="s2">;</span><span class="s1"> 
+                        debut = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">int</span><span class="s1">[] aucun = {</span><span class="s3">0</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">if </span><span class="s1">(v12 == </span><span class="s3">0</span><span class="s1">) { 
+                            tabBool[</span><span class="s3">0</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;1&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur + </span><span class="s3">1</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;2&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            nbMCouleur += </span><span class="s3">2</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        </span><span class="s2">if </span><span class="s1">(v34 == </span><span class="s3">0</span><span class="s1">) { 
+                            tabBool[</span><span class="s3">1</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;3&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur + </span><span class="s3">1</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;4&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            nbMCouleur += </span><span class="s3">2</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        </span><span class="s2">if </span><span class="s1">(v56 == </span><span class="s3">0</span><span class="s1">) { 
+                            tabBool[</span><span class="s3">2</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;5&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur + </span><span class="s3">1</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;6&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            nbMCouleur += </span><span class="s3">2</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        </span><span class="s2">if </span><span class="s1">(v78 == </span><span class="s3">0</span><span class="s1">) { 
+                            tabBool[</span><span class="s3">3</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;7&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            tabMauvaiseCouleur[nbMCouleur + </span><span class="s3">1</span><span class="s1">] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;8&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                            nbMCouleur += </span><span class="s3">2</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        </span><span class="s2">if </span><span class="s1">(v9 == </span><span class="s3">0</span><span class="s1">) { 
+                            tabMauvaiseCouleur[nbMCouleur] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;9&quot;</span><span class="s2">, </span><span class="s1">aucun)</span><span class="s2">;</span><span class="s1"> 
+                        } 
+ 
+                        nul = tabMauvaiseCouleur[</span><span class="s3">0</span><span class="s1">].couleur + tabMauvaiseCouleur[</span><span class="s3">0</span><span class="s1">].couleur</span><span class="s2">;</span><span class="s1"> 
+ 
+ 
+                    } 
+ 
+ 
+                    </span><span class="s0">//System.out.println(tabBool[0]);</span><span class="s1"> 
+                    </span><span class="s2">if </span><span class="s1">(tabBool[</span><span class="s3">0</span><span class="s1">])   </span><span class="s0">//check le nombre de 1</span><span class="s1"> 
+                    { 
+                        proposition = nul + </span><span class="s4">&quot;111&quot;</span><span class="s2">;</span><span class="s1"> 
+                        tabBool[</span><span class="s3">0</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                    } </span><span class="s2">else if </span><span class="s1">(tabBool[</span><span class="s3">1</span><span class="s1">])   </span><span class="s0">//check le nombre de 1</span><span class="s1"> 
+                    { 
+                        proposition = nul + </span><span class="s4">&quot;333&quot;</span><span class="s2">;</span><span class="s1"> 
+                        tabBool[</span><span class="s3">1</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                    } </span><span class="s2">else if </span><span class="s1">(tabBool[</span><span class="s3">2</span><span class="s1">])   </span><span class="s0">//check le nombre de 1</span><span class="s1"> 
+                    { 
+                        proposition = nul + </span><span class="s4">&quot;555&quot;</span><span class="s2">;</span><span class="s1"> 
+                        tabBool[</span><span class="s3">2</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                    } </span><span class="s2">else if </span><span class="s1">(tabBool[</span><span class="s3">3</span><span class="s1">])   </span><span class="s0">//check le nombre de 1</span><span class="s1"> 
+                    { 
+                        proposition = nul + </span><span class="s4">&quot;777&quot;</span><span class="s2">;</span><span class="s1"> 
+                        tabBool[</span><span class="s3">3</span><span class="s1">] = </span><span class="s2">false;</span><span class="s1"> 
+                    } </span><span class="s2">else if </span><span class="s1">(avancement == </span><span class="s3">12 </span><span class="s1">|| avancement == </span><span class="s3">13</span><span class="s1">) { 
+                    } </span><span class="s2">else </span><span class="s1">{ 
+                        avancement = </span><span class="s3">10</span><span class="s2">;</span><span class="s1"> 
+                    } 
+ 
+ 
+                    </span><span class="s2">if </span><span class="s1">(avancement == </span><span class="s3">10</span><span class="s1">)              </span><span class="s0">//déduction du nombre de chiffre</span><span class="s1"> 
+                    { 
+ 
+                        </span><span class="s2">int</span><span class="s1">[] tabNb = </span><span class="s2">new int</span><span class="s1">[</span><span class="s3">9</span><span class="s1">]</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">int</span><span class="s1">[] tabtmpNb = {v12</span><span class="s2">, </span><span class="s1">v34</span><span class="s2">, </span><span class="s1">v56</span><span class="s2">, </span><span class="s1">v78</span><span class="s2">, </span><span class="s1">v9}</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s0">//System.out.println(tabtmpNb.toString());</span><span class="s1"> 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">u = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">u &lt; tabtmpNb.length - v9</span><span class="s2">; </span><span class="s1">u++) { 
+                            </span><span class="s2">int </span><span class="s1">chiffre = tabtmpNb[u]</span><span class="s2">;</span><span class="s1"> 
+                            </span><span class="s0">// System.out.println(&quot;chiffre: &quot;+chiffre+&quot; en cours: &quot;+u*2);</span><span class="s1"> 
+                            </span><span class="s2">if </span><span class="s1">(chiffre &gt; </span><span class="s3">0</span><span class="s1">) { 
+                                </span><span class="s0">//  System.out.println(&quot;je passe par ici&quot;);</span><span class="s1"> 
+                                tabNb[u * </span><span class="s3">2</span><span class="s1">] = chiffre - (chiffre - (MP[recherche + u + decalage] + BP[recherche + u + decalage]))</span><span class="s2">;</span><span class="s1"> 
+                                tabNb[u * </span><span class="s3">2 </span><span class="s1">+ </span><span class="s3">1</span><span class="s1">] = chiffre - (MP[recherche + u + decalage] + BP[recherche + u + decalage])</span><span class="s2">;</span><span class="s1"> 
+                              </span><span class="s0">/*  if(u*2==6) 
+                                { 
+                                    System.out.println(recherche+u); 
+                                }*/</span><span class="s1"> 
+ 
+ 
+                            } </span><span class="s2">else</span><span class="s1"> 
+                                decalage--</span><span class="s2">;</span><span class="s1"> 
+ 
+ 
+                        } 
+                        </span><span class="s0">//  System.out.println(&quot;recherche: &quot;+recherche);</span><span class="s1"> 
+                        </span><span class="s0">//     System.out.println(Arrays.toString(MP));</span><span class="s1"> 
+                        </span><span class="s0">//    System.out.println(Arrays.toString(BP));</span><span class="s1"> 
+                        </span><span class="s0">//    System.out.println(Arrays.toString(tabNb));</span><span class="s1"> 
+                        </span><span class="s0">//    System.out.println(Arrays.toString(tabtmpNb));</span><span class="s1"> 
+ 
+                        </span><span class="s2">int </span><span class="s1">cas = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">int</span><span class="s1">[] firstHalf = {</span><span class="s3">1</span><span class="s2">, </span><span class="s3">2</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">int</span><span class="s1">[] secondHalf = {</span><span class="s3">3</span><span class="s2">, </span><span class="s3">4</span><span class="s2">, </span><span class="s3">5</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">int</span><span class="s1">[] repartition = {</span><span class="s3">2</span><span class="s2">, </span><span class="s3">3</span><span class="s1">}</span><span class="s2">; </span><span class="s0">//compte le nombre de place restante dans chaque moitié</span><span class="s1"> 
+                        decalage = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">u = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">u &lt; recherche</span><span class="s2">; </span><span class="s1">u++) { 
+                            </span><span class="s0">//nous allons travailler par paires, c'est à dire 1-2 3-4 5-6 7-8</span><span class="s1"> 
+                            </span><span class="s2">if </span><span class="s1">(tabtmpNb[u] &gt; </span><span class="s3">0</span><span class="s1">) { 
+                                </span><span class="s2">int </span><span class="s1">chiffreImpair = u * </span><span class="s3">2 </span><span class="s1">+ </span><span class="s3">1</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s2">int </span><span class="s1">chiffrePair = u * </span><span class="s3">2 </span><span class="s1">+ </span><span class="s3">2</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">v = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">v &lt; BP[recherche + (chiffrePair / </span><span class="s3">2</span><span class="s1">) - </span><span class="s3">1 </span><span class="s1">+ decalage]</span><span class="s2">; </span><span class="s1">v++) </span><span class="s0">//si le chiffre impair testé seul est bien placé, il peut être en place 2,3,4</span><span class="s1"> 
+                                { 
+ 
+                                    tabCouleur[cas] = </span><span class="s2">new </span><span class="s1">Couleur(String.valueOf(chiffreImpair)</span><span class="s2">, </span><span class="s1">secondHalf)</span><span class="s2">;</span><span class="s1"> 
+                                    repartition[</span><span class="s3">1</span><span class="s1">]--</span><span class="s2">;</span><span class="s1"> 
+                                    cas++</span><span class="s2">;</span><span class="s1"> 
+                                } 
+                                </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">v = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">v &lt; MP[recherche + (chiffrePair / </span><span class="s3">2</span><span class="s1">) - </span><span class="s3">1 </span><span class="s1">+ decalage]</span><span class="s2">; </span><span class="s1">v++) </span><span class="s0">//si le chiffre impair testé seul est mal placé, il peut être en place 1,2</span><span class="s1"> 
+                                { 
+                                    tabCouleur[cas] = </span><span class="s2">new </span><span class="s1">Couleur(String.valueOf(chiffreImpair)</span><span class="s2">, </span><span class="s1">firstHalf)</span><span class="s2">;</span><span class="s1"> 
+                                    repartition[</span><span class="s3">0</span><span class="s1">]--</span><span class="s2">;</span><span class="s1"> 
+                                    cas++</span><span class="s2">;</span><span class="s1"> 
+                                } 
+ 
+                            } </span><span class="s2">else</span><span class="s1"> 
+                                decalage--</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        </span><span class="s0">//maintenant nous allons chercher les positions possibles des chiffres pairs, c'est à dire ceux que l'on a pas isolés</span><span class="s1"> 
+                        decalage = </span><span class="s3">0</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">u = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">u &lt; recherche</span><span class="s2">; </span><span class="s1">u++) { 
+                            </span><span class="s2">if </span><span class="s1">(tabtmpNb[u] &gt; </span><span class="s3">0</span><span class="s1">) { 
+                                </span><span class="s2">int </span><span class="s1">chiffreImpair = u * </span><span class="s3">2 </span><span class="s1">+ </span><span class="s3">1</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s2">int </span><span class="s1">chiffrePair = u * </span><span class="s3">2 </span><span class="s1">+ </span><span class="s3">2</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s0">// System.out.println(&quot;recherche: &quot;+recherche);</span><span class="s1"> 
+                                </span><span class="s0">// System.out.println(&quot;Chiffre: &quot;+chiffrePair);</span><span class="s1"> 
+                                </span><span class="s0">// System.out.println(&quot;BP[u]: &quot;+BP[u]);</span><span class="s1"> 
+                                </span><span class="s0">// System.out.println(&quot;MP[u]: &quot;+MP[u]);</span><span class="s1"> 
+                                </span><span class="s2">int </span><span class="s1">BPchiffrePair = BP[u] - MP[u + recherche + decalage]</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s2">int </span><span class="s1">MPchiffrePair = MP[u] - BP[u + recherche + decalage]</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s0">//  System.out.println(&quot;BP: &quot;+BPchiffrePair);</span><span class="s1"> 
+                                </span><span class="s0">// System.out.println(&quot;MP: &quot;+MPchiffrePair);</span><span class="s1"> 
+                                </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">v = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">v &lt; BPchiffrePair</span><span class="s2">; </span><span class="s1">v++) { 
+                                    tabCouleur[cas] = </span><span class="s2">new </span><span class="s1">Couleur(String.valueOf(chiffrePair)</span><span class="s2">, </span><span class="s1">secondHalf)</span><span class="s2">;</span><span class="s1"> 
+                                    repartition[</span><span class="s3">1</span><span class="s1">]--</span><span class="s2">;</span><span class="s1"> 
+                                    cas++</span><span class="s2">;</span><span class="s1"> 
+                                } 
+                                </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">v = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">v &lt; MPchiffrePair</span><span class="s2">; </span><span class="s1">v++) { 
+                                    tabCouleur[cas] = </span><span class="s2">new </span><span class="s1">Couleur(String.valueOf(chiffrePair)</span><span class="s2">, </span><span class="s1">firstHalf)</span><span class="s2">;</span><span class="s1"> 
+                                    cas++</span><span class="s2">;</span><span class="s1"> 
+                                    repartition[</span><span class="s3">0</span><span class="s1">]--</span><span class="s2">;</span><span class="s1"> 
+                                } 
+ 
+                            } </span><span class="s2">else</span><span class="s1"> 
+                                decalage--</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        </span><span class="s0">//System.out.println(repartition.toString());</span><span class="s1"> 
+                        </span><span class="s0">// System.out.println(repartition[0]+&quot; &quot;+repartition[1]);</span><span class="s1"> 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">g = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">g &lt; repartition[</span><span class="s3">0</span><span class="s1">]</span><span class="s2">; </span><span class="s1">g++) { 
+                            tabCouleur[cas] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;9&quot;</span><span class="s2">, </span><span class="s1">firstHalf)</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">g = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">g &lt; repartition[</span><span class="s3">1</span><span class="s1">]</span><span class="s2">; </span><span class="s1">g++) { 
+                            tabCouleur[cas] = </span><span class="s2">new </span><span class="s1">Couleur(</span><span class="s4">&quot;9&quot;</span><span class="s2">, </span><span class="s1">secondHalf)</span><span class="s2">;</span><span class="s1"> 
+                        } 
+ 
+ 
+ 
+                       </span><span class="s0">/* for(int h=0;h&lt;tabCouleur.length;h++) 
+                        { 
+                            if(tabCouleur[h] != null) 
+                                tabCouleur[h].Afficher(); 
+                        }*/</span><span class="s1"> 
+                       </span><span class="s0">/* avancement=11; 
+                    } 
+                    if(avancement==11) 
+                    {*/</span><span class="s1"> 
+                        proposition = </span><span class="s4">&quot;&quot;</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s0">//System.out.println(nul);</span><span class="s1"> 
+                        nul = </span><span class="s4">&quot;&quot; </span><span class="s1">+ nul.charAt(</span><span class="s3">0</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                        test = i</span><span class="s2">; </span><span class="s0">//permet de récupérer plus tard l'index de la future réponse</span><span class="s1"> 
+                        </span><span class="s2">int</span><span class="s1">[] firsthalf = {</span><span class="s3">1</span><span class="s2">, </span><span class="s3">2</span><span class="s1">}</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">h = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">h &lt; </span><span class="s3">5</span><span class="s2">; </span><span class="s1">h++) { 
+                            </span><span class="s0">//System.out.println(Arrays.toString(tabCouleur[h].getProba()));</span><span class="s1"> 
+                            </span><span class="s2">if </span><span class="s1">(tabCouleur[h].getProba()[</span><span class="s3">0</span><span class="s1">] == </span><span class="s3">1</span><span class="s1">) { 
+                                </span><span class="s2">if </span><span class="s1">(nbtest[</span><span class="s3">0</span><span class="s1">] == </span><span class="s2">null</span><span class="s1">) 
+                                    nbtest[</span><span class="s3">0</span><span class="s1">] = tabCouleur[h].getCouleur()</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s2">else</span><span class="s1"> 
+                                    nbtest[</span><span class="s3">1</span><span class="s1">] = tabCouleur[h].getCouleur()</span><span class="s2">;</span><span class="s1"> 
+                                </span><span class="s0">// System.out.println(&quot;YES&quot;);</span><span class="s1"> 
+                                proposition += tabCouleur[h].getCouleur()</span><span class="s2">;</span><span class="s1"> 
+                            } 
+                        } 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">h = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">h &lt; </span><span class="s3">3</span><span class="s2">; </span><span class="s1">h++) { 
+                            proposition += nul</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        avancement = </span><span class="s3">12</span><span class="s2">;</span><span class="s1"> 
+ 
+                    } </span><span class="s2">else if </span><span class="s1">(avancement == </span><span class="s3">12</span><span class="s1">) { 
+                        </span><span class="s0">// System.out.println(&quot;hello&quot;);</span><span class="s1"> 
+                        </span><span class="s2">if </span><span class="s1">(BP[test] == </span><span class="s3">2</span><span class="s1">) { 
+                            </span><span class="s0">//  System.out.println(&quot;Je valide les anciens &quot;);</span><span class="s1"> 
+                            </span><span class="s0">//  System.out.println(&quot;nb test: &quot;+Arrays.toString(nbtest));</span><span class="s1"> 
+                            tabCase[</span><span class="s3">0</span><span class="s1">].setTrouvé(nbtest[</span><span class="s3">0</span><span class="s1">])</span><span class="s2">;</span><span class="s1"> 
+                            tabCase[</span><span class="s3">1</span><span class="s1">].setTrouvé(nbtest[</span><span class="s3">1</span><span class="s1">])</span><span class="s2">;</span><span class="s1"> 
+                        } </span><span class="s2">else if </span><span class="s1">(MP[test] == </span><span class="s3">2</span><span class="s1">) { 
+                            </span><span class="s0">// System.out.println(&quot;Je ne valide pas les anciens, je les switch&quot;);</span><span class="s1"> 
+                            tabCase[</span><span class="s3">0</span><span class="s1">].setTrouvé(nbtest[</span><span class="s3">1</span><span class="s1">])</span><span class="s2">;</span><span class="s1"> 
+                            tabCase[</span><span class="s3">1</span><span class="s1">].setTrouvé(nbtest[</span><span class="s3">0</span><span class="s1">])</span><span class="s2">;</span><span class="s1"> 
+                        } 
+                        avancement = </span><span class="s3">13</span><span class="s2">;</span><span class="s1"> 
+                    } 
+                    </span><span class="s2">if </span><span class="s1">(avancement == </span><span class="s3">13</span><span class="s1">)          </span><span class="s0">//shuffle pour trouver les 3 derniers nombres</span><span class="s1"> 
+                    { 
+                        List&lt;String&gt; solution = </span><span class="s2">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s2">;</span><span class="s1"> 
+                        </span><span class="s2">for </span><span class="s1">(</span><span class="s2">int </span><span class="s1">u = </span><span class="s3">0</span><span class="s2">; </span><span class="s1">u &lt; </span><span class="s3">5</span><span class="s2">; </span><span class="s1">u++) { 
+                            </span><span class="s2">if </span><span class="s1">(tabCouleur[u].proba[</span><span class="s3">0</span><span class="s1">] == </span><span class="s3">3</span><span class="s1">) { 
+                                solution.add(tabCouleur[u].couleur)</span><span class="s2">;</span><span class="s1"> 
+                            } 
+                        } 
+                        Collections.shuffle(solution)</span><span class="s2">;</span><span class="s1"> 
+                        String strsolution = solution.toString()</span><span class="s2">;</span><span class="s1"> 
+ 
+                        </span><span class="s2">while </span><span class="s1">(lastThreeCaracters.contains(strsolution)) { 
+                            Collections.shuffle(solution)</span><span class="s2">;</span><span class="s1"> 
+                            strsolution = solution.toString()</span><span class="s2">;</span><span class="s1"> 
+ 
+                        } 
+                        lastThreeCaracters.add(strsolution)</span><span class="s2">;</span><span class="s1"> 
+                        strsolution = String.join(</span><span class="s4">&quot;&quot;</span><span class="s2">, </span><span class="s1">solution)</span><span class="s2">;</span><span class="s1"> 
+                        proposition = tabCase[</span><span class="s3">0</span><span class="s1">].couleur + tabCase[</span><span class="s3">1</span><span class="s1">].couleur + strsolution</span><span class="s2">;</span><span class="s1"> 
+                    } 
+ 
+ 
+                } 
+ 
+                System.out.println(</span><span class="s4">&quot;Tour &quot; </span><span class="s1">+ (i + </span><span class="s3">1 </span><span class="s1">+ aide) + </span><span class="s4">&quot;: Je propose: &quot; </span><span class="s1">+ proposition)</span><span class="s2">;</span><span class="s1"> 
+                System.out.println(</span><span class="s4">&quot;Combien de bien placé?&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                BP[i] = Integer.parseInt(sc.next())</span><span class="s2">;</span><span class="s1"> 
+                System.out.println(</span><span class="s4">&quot;Combien de mal placé?&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                </span><span class="s0">//System.out.println(debut);</span><span class="s1"> 
+                MP[i] = Integer.parseInt(sc.next())</span><span class="s2">;</span><span class="s1"> 
+                </span><span class="s0">//System.out.println(MP[i]);</span><span class="s1"> 
+                </span><span class="s0">// System.out.println(BP[i]);</span><span class="s1"> 
+ 
+                </span><span class="s2">if </span><span class="s1">(debut == -</span><span class="s3">1</span><span class="s1">) { 
+                    System.out.println(</span><span class="s4">&quot;Passé dans la phase 2&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                } </span><span class="s2">else if </span><span class="s1">(debut &lt; </span><span class="s3">5</span><span class="s1">) 
+                    debut += BP[i] + MP[i]</span><span class="s2">;</span><span class="s1"> 
+                </span><span class="s2">if </span><span class="s1">(debut == </span><span class="s3">5 </span><span class="s1">&amp;&amp; i &lt; </span><span class="s3">4</span><span class="s1">) { 
+                    avancement = </span><span class="s3">5</span><span class="s2">;</span><span class="s1"> 
+                } 
+                </span><span class="s2">if </span><span class="s1">(debut &gt; </span><span class="s3">5 </span><span class="s1">&amp;&amp; i &lt; </span><span class="s3">3</span><span class="s1">) { 
+                    System.out.println(</span><span class="s4">&quot;Je joue pas avec les tricheurs&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                    i = </span><span class="s3">10</span><span class="s2">;</span><span class="s1"> 
+                } 
+                </span><span class="s2">if </span><span class="s1">(BP[i] == </span><span class="s3">5</span><span class="s1">) { 
+                    System.out.println(</span><span class="s4">&quot;J'ai gagné!&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                    </span><span class="s2">break;</span><span class="s1"> 
+                } 
+                </span><span class="s0">//   System.out.println(debut);</span><span class="s1"> 
+ 
+                </span><span class="s2">if </span><span class="s1">(i == </span><span class="s3">9 </span><span class="s1">&amp;&amp; BP[i] != </span><span class="s3">5</span><span class="s1">) { 
+                    System.out.println(</span><span class="s4">&quot;Je n'ai pas réussi à trouver à temps... Pourrais tu me laisser encore quelques tours pour que je puisses deviner? (oui/non)&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+ 
+                    String ask = sc.next()</span><span class="s2">;</span><span class="s1"> 
+                    </span><span class="s2">if </span><span class="s1">(ask.equals(</span><span class="s4">&quot;oui&quot;</span><span class="s1">)) { 
+                        System.out.println(</span><span class="s4">&quot;Merci! Combien de tours souhaite tu me donner? :-)&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                        aide = Integer.parseInt(sc.next())</span><span class="s2">;</span><span class="s1"> 
+                        i -= aide</span><span class="s2">;</span><span class="s1"> 
+                    } </span><span class="s2">else </span><span class="s1">{ 
+                        System.out.println(</span><span class="s4">&quot;Je comprends, je comprends, je ne suis pas encore parfait, mais je controlerai le monde bientôt!&quot;</span><span class="s1">)</span><span class="s2">;</span><span class="s1"> 
+                    } 
+                } 
+            } 
+        } </span><span class="s2">else </span><span class="s1">{ 
+ 
+            leave=</span><span class="s2">false;</span><span class="s1"> 
+ 
+               } 
+    } 
+ 
+}}</span></pre>
+</body>
+</html>

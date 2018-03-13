@@ -1,0 +1,401 @@
+<html>
+<head>
+<title>BDD.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(106,135,89); }
+.s3 { color: rgb(104,151,187); }
+.s4 { color: rgb(128,128,128); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+BDD.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">import </span><span class="s1">java.sql.*</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.text.DateFormat</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.text.ParseException</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.Locale</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.Scanner</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.Date</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.text.SimpleDateFormat</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.text.ParseException</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">public class </span><span class="s1">BDD{ 
+ 
+    </span><span class="s0">public </span><span class="s1">String password</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">public </span><span class="s1">String username</span><span class="s0">;</span><span class="s1"> 
+ 
+    Date theDate = </span><span class="s0">new </span><span class="s1">Date()</span><span class="s0">;</span><span class="s1"> 
+    Scanner sc = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s0">;</span><span class="s1"> 
+    SimpleDateFormat formater = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s2">&quot;dd.MM.yyyy&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+    java.sql.Date theBirthdate = </span><span class="s0">new </span><span class="s1">java.sql.Date(</span><span class="s3">2000</span><span class="s0">,</span><span class="s3">01</span><span class="s0">,</span><span class="s3">01</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">int </span><span class="s1">counter = </span><span class="s3">0</span><span class="s0">;</span><span class="s1"> 
+     
+    </span><span class="s0">public void </span><span class="s1">setPassword(String _password) 
+    { 
+        password=_password</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s0">public void </span><span class="s1">setUsername(String _username) { 
+        username = _username</span><span class="s0">;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s0">public </span><span class="s1">BDD(String _username</span><span class="s0">,</span><span class="s1">String _password) 
+    { 
+        username=_username</span><span class="s0">;</span><span class="s1"> 
+        password=_password</span><span class="s0">;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s0">public boolean </span><span class="s1">testConnect() 
+    { 
+        </span><span class="s0">try</span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            Connection con=DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/?&quot;</span><span class="s0">, </span><span class="s1">username</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+ 
+            </span><span class="s0">return true;</span><span class="s1"> 
+        } 
+        </span><span class="s0">catch</span><span class="s1">(Exception e){ 
+ 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s0">return false;</span><span class="s1"> 
+ 
+        } 
+ 
+ 
+    } 
+ 
+ 
+    </span><span class="s0">public void </span><span class="s1">createBDD() { 
+        </span><span class="s0">try</span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            Connection con=DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/?&quot;</span><span class="s0">, </span><span class="s1">username</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+            Statement stmt=con.createStatement()</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s0">int </span><span class="s1">Result=stmt.executeUpdate(</span><span class="s2">&quot;CREATE DATABASE mastermind&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+            System.out.print(</span><span class="s2">&quot;Base de donnée mastermind créée avec succès ! </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+        } 
+        </span><span class="s0">catch</span><span class="s1">(Exception e){ 
+ 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+ 
+        } 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">createUsersTable() { 
+        </span><span class="s0">try</span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            Connection con=DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/mastermind&quot;</span><span class="s0">, </span><span class="s1">username</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+            Statement stmt=con.createStatement()</span><span class="s0">;</span><span class="s1"> 
+            String SQL_table_to_play = </span><span class="s2">&quot;CREATE TABLE users(&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;id_user INT PRIMARY KEY AUTO_INCREMENT,&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;nom VARCHAR(20),&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;prénom VARCHAR(20), &quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;nickname VARCHAR(10), &quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;password VARCHAR(10),&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;email VARCHAR(30),&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;birthdate DATE)&quot;</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s0">int </span><span class="s1">table = stmt.executeUpdate(SQL_table_to_play)</span><span class="s0">;</span><span class="s1"> 
+            System.out.print(</span><span class="s2">&quot;Table users créée avec succès ! </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">catch</span><span class="s1">(Exception e){ 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+        } 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">createStatsTable() { 
+        </span><span class="s0">try</span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            Connection con=DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/mastermind&quot;</span><span class="s0">, </span><span class="s1">username</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+            Statement stmt=con.createStatement()</span><span class="s0">;</span><span class="s1"> 
+            String SQL_table_to_play = </span><span class="s2">&quot;CREATE TABLE stats(&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;id_stats INT PRIMARY KEY AUTO_INCREMENT,&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;nickname VARCHAR(10),&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;won INT,&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;lost INT,&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;ratio INT,&quot; </span><span class="s1">+ 
+                    </span><span class="s2">&quot;rounds INT)&quot;</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s0">int </span><span class="s1">table = stmt.executeUpdate(SQL_table_to_play)</span><span class="s0">;</span><span class="s1"> 
+            System.out.print(</span><span class="s2">&quot;Table statistique créée avec succès ! </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">catch</span><span class="s1">(Exception e){ 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+        } 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">connectBDD() { 
+        </span><span class="s0">try</span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            Connection con=DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/mastermind&quot;</span><span class="s0">,</span><span class="s1">username</span><span class="s0">,</span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">catch</span><span class="s1">(Exception e){ 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+        } 
+    } 
+ 
+    </span><span class="s0">public boolean </span><span class="s1">insertStats(</span><span class="s0">int </span><span class="s1">w</span><span class="s0">, int </span><span class="s1">l</span><span class="s0">, int </span><span class="s1">r</span><span class="s0">, </span><span class="s1">String pseudo) { 
+        </span><span class="s0">double </span><span class="s1">ratio=</span><span class="s3">0</span><span class="s0">;</span><span class="s1"> 
+        String userdata=</span><span class="s2">&quot;&quot;</span><span class="s0">;</span><span class="s1"> 
+        String getData =</span><span class="s2">&quot;&quot;</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s0">int </span><span class="s1">rounds = r</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">try </span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            Connection con = DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/mastermind&quot;</span><span class="s0">, </span><span class="s1">username</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+            Statement stmt = con.createStatement()</span><span class="s0">;</span><span class="s1"> 
+            String SQL_get_Name = </span><span class="s2">&quot;SELECT * FROM stats WHERE nickname = '&quot; </span><span class="s1">+ pseudo + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+            ResultSet rs = stmt.executeQuery(SQL_get_Name)</span><span class="s0">;</span><span class="s1"> 
+            ResultSetMetaData metaData = rs.getMetaData()</span><span class="s0">;</span><span class="s1"> 
+ 
+ 
+ 
+            </span><span class="s0">if</span><span class="s1">(rs.next()) { 
+                </span><span class="s4">/*int win=0; 
+                int loose=0;*/</span><span class="s1"> 
+ 
+                </span><span class="s0">int </span><span class="s1">win = w + rs.getInt(</span><span class="s3">3</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">int </span><span class="s1">loose = l + rs.getInt(</span><span class="s3">4</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">boolean </span><span class="s1">rectif = </span><span class="s0">false;</span><span class="s1"> 
+                </span><span class="s0">if</span><span class="s1">(loose==</span><span class="s3">0</span><span class="s1">) { 
+                    loose = </span><span class="s3">1</span><span class="s0">;</span><span class="s1"> 
+                    rectif=</span><span class="s0">true;</span><span class="s1"> 
+                } 
+ 
+ 
+                System.out.println(</span><span class="s2">&quot;Hello&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+                </span><span class="s4">/*System.out.println(getData); 
+                System.out.println(pseudo);*/</span><span class="s1"> 
+                String DBuser=rs.getString(</span><span class="s3">2</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+                </span><span class="s0">if </span><span class="s1">(pseudo.equals(DBuser)) { 
+                    </span><span class="s4">/*ratio = ratio / (counter+1); 
+                    rounds = rounds / (counter+1);*/</span><span class="s1"> 
+ 
+                    ratio=(</span><span class="s0">double</span><span class="s1">)win/(</span><span class="s0">double</span><span class="s1">)(loose)</span><span class="s0">;</span><span class="s1"> 
+ 
+                    </span><span class="s0">if</span><span class="s1">(rectif) 
+                        loose=</span><span class="s3">0</span><span class="s0">;</span><span class="s1"> 
+ 
+                    String SQL_query_Update = </span><span class="s2">&quot;UPDATE stats SET won=&quot; </span><span class="s1">+ win + </span><span class="s2">&quot;, lost=&quot; </span><span class="s1">+ loose + </span><span class="s2">&quot;, ratio = &quot; </span><span class="s1">+ ratio + </span><span class="s2">&quot;, rounds = &quot; </span><span class="s1">+ r + </span><span class="s2">&quot; WHERE nickname = '&quot; </span><span class="s1">+ pseudo + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;requete : &quot; </span><span class="s1">+ SQL_query_Update)</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">int </span><span class="s1">secres = stmt.executeUpdate(SQL_query_Update)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Les données ont été mises à jour !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">return true;</span><span class="s1"> 
+                } 
+ 
+            } 
+            System.out.println(</span><span class="s2">&quot;insert&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            String SQL_query_In = </span><span class="s2">&quot;INSERT INTO stats(nickname, won, lost, ratio, rounds) VALUES ('&quot; </span><span class="s1">+ pseudo + </span><span class="s2">&quot;', '&quot; </span><span class="s1">+ w + </span><span class="s2">&quot;', '&quot; </span><span class="s1">+ l + </span><span class="s2">&quot;', '&quot; </span><span class="s1">+ ratio + </span><span class="s2">&quot;', '&quot; </span><span class="s1">+ rounds + </span><span class="s2">&quot;')&quot;</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s0">int </span><span class="s1">secres = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+            System.out.println(</span><span class="s2">&quot;Statistiques sauvegardées !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s0">return true;</span><span class="s1"> 
+ 
+        } </span><span class="s0">catch </span><span class="s1">(Exception e) { 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+            System.out.print(</span><span class="s2">&quot;Une erreur est survenue dans la sauvegarde de votre partie&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">return false;</span><span class="s1"> 
+    } 
+ 
+ 
+    </span><span class="s0">public boolean </span><span class="s1">select(String field</span><span class="s0">, </span><span class="s1">String table</span><span class="s0">, </span><span class="s1">String theField){ 
+        String Data = </span><span class="s2">&quot;&quot;</span><span class="s0">;</span><span class="s1"> 
+        String userData = </span><span class="s2">&quot;&quot;</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">try</span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Connection</span><span class="s1"> 
+            Connection con=DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/mastermind&quot;</span><span class="s0">,</span><span class="s1">username</span><span class="s0">,</span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Instruction</span><span class="s1"> 
+            Statement stmt=con.createStatement()</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Request</span><span class="s1"> 
+            String SQL_query = </span><span class="s2">&quot;SELECT &quot; </span><span class="s1">+ field + </span><span class="s2">&quot; FROM &quot; </span><span class="s1">+ table + </span><span class="s2">&quot; WHERE &quot; </span><span class="s1">+ field + </span><span class="s2">&quot; = '&quot; </span><span class="s1">+ theField + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+            ResultSet rs=stmt.executeQuery(SQL_query)</span><span class="s0">;</span><span class="s1"> 
+ 
+            ResultSetMetaData metaData = rs.getMetaData()</span><span class="s0">;</span><span class="s1"> 
+            userData = metaData.getColumnLabel(</span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s0">while</span><span class="s1">(rs.next()) { 
+                Data = rs.getString(userData)</span><span class="s0">;</span><span class="s1"> 
+                System.out.print(Data + </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">if </span><span class="s1">(theField.equals(Data)) { 
+                    System.out.print(</span><span class="s2">&quot;Valid field. </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">return true;</span><span class="s1"> 
+                } 
+                </span><span class="s0">else </span><span class="s1">{ 
+                    System.out.print(</span><span class="s2">&quot;Wrong information in field ... </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                } 
+            } 
+            con.close()</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">catch</span><span class="s1">(Exception e){ 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">return false;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s0">public boolean </span><span class="s1">insertAccount() { 
+        System.out.println(</span><span class="s2">&quot;Les champs ne doivent pas être trop long (&lt;10 caractères sauf l'email 30).&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;Et tous non vide.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;Entrer votre nom: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        String theName = sc.next()</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;Entrer votre prénom: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        String theFirstName = sc.next()</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;Entrer un pseudo: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        String theNick = sc.next()</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;Entrer un mot de passe: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        String thePass = sc.next()</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;Entrer une adresse mail: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        String theEmail = sc.next()</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;Entrer votre date de naissance au format JJ.MM.YYYY: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        String dateDB = sc.next()</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s0">try </span><span class="s1">{ 
+            theDate = formater.parse(dateDB)</span><span class="s0">;</span><span class="s1"> 
+            theBirthdate = </span><span class="s0">new </span><span class="s1">java.sql.Date(theDate.getTime())</span><span class="s0">;</span><span class="s1"> 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Connection</span><span class="s1"> 
+            Connection con = DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/mastermind&quot;</span><span class="s0">, </span><span class="s1">username</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Instruction</span><span class="s1"> 
+            Statement stmt = con.createStatement()</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Request</span><span class="s1"> 
+            </span><span class="s0">if </span><span class="s1">(theNick == </span><span class="s2">&quot;&quot; </span><span class="s1">|| thePass == </span><span class="s2">&quot;&quot; </span><span class="s1">|| theEmail == </span><span class="s2">&quot;&quot; </span><span class="s1">|| theNick.length() &gt;= </span><span class="s3">10 </span><span class="s1">|| thePass.length() &gt;= </span><span class="s3">10 </span><span class="s1">|| theEmail.length() &gt;= </span><span class="s3">30 </span><span class="s1">|| theBirthdate != </span><span class="s0">null</span><span class="s1">) { 
+                </span><span class="s4">/*if (select(&quot;nickname&quot;, &quot;users&quot;, theNick) == true || select(&quot;password&quot;, &quot;users&quot;, thePass) == true) { 
+                    System.out.print(&quot;Veuillez entrer des champs valides ... Et non déjà utilisés.&quot;); 
+                    insertAccount(); 
+                } 
+           // }*/// else {</span><span class="s1"> 
+                String SQL_query_In = </span><span class="s2">&quot;INSERT INTO users(nom, prénom, nickname, password, email, birthdate) VALUES ('&quot; </span><span class="s1">+ theName + </span><span class="s2">&quot;','&quot; </span><span class="s1">+ theFirstName + </span><span class="s2">&quot;','&quot; </span><span class="s1">+ theNick + </span><span class="s2">&quot;', '&quot; </span><span class="s1">+ thePass + </span><span class="s2">&quot;', '&quot; </span><span class="s1">+ theEmail + </span><span class="s2">&quot;', '&quot; </span><span class="s1">+ theBirthdate + </span><span class="s2">&quot;')&quot;</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">int </span><span class="s1">rs = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+                System.out.println(</span><span class="s2">&quot;Le compte a été créé !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">return true;</span><span class="s1"> 
+            } 
+        } </span><span class="s0">catch </span><span class="s1">(Exception e) { 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+ 
+        } 
+        </span><span class="s0">return false;</span><span class="s1"> 
+    } 
+ 
+        </span><span class="s0">public boolean </span><span class="s1">updateAccount(String BDD_user) { 
+        System.out.println(</span><span class="s2">&quot;Choisissez quel champ vous voulez modifier: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;1. Le nom&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;2. Le prénom&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;3. Le pseudo&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;4. Le mot de passe&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;5. L'email&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        System.out.println(</span><span class="s2">&quot;6. La date de naissance&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        String theAnswer = sc.next()</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s0">try</span><span class="s1">{ 
+            Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Connection</span><span class="s1"> 
+            Connection con=DriverManager.getConnection(</span><span class="s2">&quot;jdbc:mysql://localhost:3306/mastermind&quot;</span><span class="s0">,</span><span class="s1">username</span><span class="s0">,</span><span class="s1">password)</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Instruction</span><span class="s1"> 
+            Statement stmt=con.createStatement()</span><span class="s0">;</span><span class="s1"> 
+            </span><span class="s4">// Request</span><span class="s1"> 
+            </span><span class="s0">if </span><span class="s1">(theAnswer == </span><span class="s0">null</span><span class="s1">) { 
+                System.out.print(</span><span class="s2">&quot;Veuillez entrer un numéro valide comme indiquer ... &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                updateAccount(BDD_user)</span><span class="s0">;</span><span class="s1"> 
+            } 
+            </span><span class="s0">else </span><span class="s1">{ 
+                </span><span class="s0">if </span><span class="s1">(theAnswer.equals(</span><span class="s2">&quot;1&quot;</span><span class="s1">)) { 
+                    System.out.println(</span><span class="s2">&quot;Entrer le nouveau nom: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String theName = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    String SQL_query_In = </span><span class="s2">&quot;UPDATE users SET nom = '&quot; </span><span class="s1">+ theName + </span><span class="s2">&quot;' WHERE nickname = '&quot; </span><span class="s1">+ BDD_user + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">int </span><span class="s1">rs = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Votre nom a été modifié avec succès !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Voulez-vous modifier quelque chose d'autre ? o/n: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String modAgain = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">if </span><span class="s1">(modAgain.equals(</span><span class="s2">&quot;o&quot;</span><span class="s1">)) { 
+                        updateAccount(BDD_user)</span><span class="s0">;</span><span class="s1"> 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return true;</span><span class="s1"> 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(theAnswer.equals(</span><span class="s2">&quot;2&quot;</span><span class="s1">)) { 
+                    System.out.println(</span><span class="s2">&quot;Entrer le nouveau prénom: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String theFirstName = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    String SQL_query_In = </span><span class="s2">&quot;UPDATE users SET prénom = '&quot; </span><span class="s1">+ theFirstName + </span><span class="s2">&quot;' WHERE nickname = '&quot; </span><span class="s1">+ BDD_user + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">int </span><span class="s1">rs = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Votre prénom a été modifié avec succès !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Voulez-vous modifier quelque chose d'autre ? o/n: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String modAgain = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">if </span><span class="s1">(modAgain.equals(</span><span class="s2">&quot;o&quot;</span><span class="s1">)) { 
+                        updateAccount(BDD_user)</span><span class="s0">;</span><span class="s1"> 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return true;</span><span class="s1"> 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(theAnswer.equals(</span><span class="s2">&quot;3&quot;</span><span class="s1">)) { 
+                    System.out.println(</span><span class="s2">&quot;Entrer le nouveau pseudo: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String theNick = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    String SQL_query_In = </span><span class="s2">&quot;UPDATE users SET nickname = '&quot; </span><span class="s1">+ theNick + </span><span class="s2">&quot;' WHERE nickname = '&quot; </span><span class="s1">+ BDD_user + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">int </span><span class="s1">rs = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Votre pseudo a été modifié avec succès !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Voulez-vous modifier quelque chose d'autre ? o/n: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String modAgain = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">if </span><span class="s1">(modAgain.equals(</span><span class="s2">&quot;o&quot;</span><span class="s1">)) { 
+                        updateAccount(BDD_user)</span><span class="s0">;</span><span class="s1"> 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return true;</span><span class="s1"> 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(theAnswer.equals(</span><span class="s2">&quot;4&quot;</span><span class="s1">)) { 
+                    System.out.println(</span><span class="s2">&quot;Entrer le nouveau mot de passe: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String thePass = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    String SQL_query_In = </span><span class="s2">&quot;UPDATE users SET password = '&quot; </span><span class="s1">+ thePass + </span><span class="s2">&quot;' WHERE nickname = '&quot; </span><span class="s1">+ BDD_user + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">int </span><span class="s1">rs = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Votre mot de passe a été modifié avec succès !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Voulez-vous modifier quelque chose d'autre ? o/n: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String modAgain = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">if </span><span class="s1">(modAgain.equals(</span><span class="s2">&quot;o&quot;</span><span class="s1">)) { 
+                        updateAccount(BDD_user)</span><span class="s0">;</span><span class="s1"> 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return true;</span><span class="s1"> 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(theAnswer.equals(</span><span class="s2">&quot;5&quot;</span><span class="s1">)) { 
+                    System.out.println(</span><span class="s2">&quot;Entrer le nouvel email: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String theEmail = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    String SQL_query_In = </span><span class="s2">&quot;UPDATE users SET email = '&quot; </span><span class="s1">+ theEmail + </span><span class="s2">&quot;' WHERE nickname = '&quot; </span><span class="s1">+ BDD_user + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">int </span><span class="s1">rs = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Votre email a été modifié avec succès !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Voulez-vous modifier quelque chose d'autre ? o/n: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String modAgain = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">if </span><span class="s1">(modAgain.equals(</span><span class="s2">&quot;o&quot;</span><span class="s1">)) { 
+                        updateAccount(BDD_user)</span><span class="s0">;</span><span class="s1"> 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return true;</span><span class="s1"> 
+                    } 
+                } </span><span class="s0">else if </span><span class="s1">(theAnswer.equals(</span><span class="s2">&quot;6&quot;</span><span class="s1">)) { 
+                    System.out.println(</span><span class="s2">&quot;Entrer la nouvelle date de naissance au format JJ.MM.YYYY: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String dateDB = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    theDate = formater.parse(dateDB)</span><span class="s0">;</span><span class="s1"> 
+                    theBirthdate = </span><span class="s0">new </span><span class="s1">java.sql.Date(theDate.getTime())</span><span class="s0">;</span><span class="s1"> 
+                    String SQL_query_In = </span><span class="s2">&quot;UPDATE users SET birthdate = '&quot; </span><span class="s1">+ theBirthdate + </span><span class="s2">&quot;' WHERE nickname = '&quot; </span><span class="s1">+ BDD_user + </span><span class="s2">&quot;'&quot;</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">int </span><span class="s1">rs = stmt.executeUpdate(SQL_query_In)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Votre date de naissance a été modifié avec succès !&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    System.out.println(</span><span class="s2">&quot;Voulez-vous modifier quelque chose d'autre ? o/n: &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    String modAgain = sc.next()</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">if </span><span class="s1">(modAgain.equals(</span><span class="s2">&quot;o&quot;</span><span class="s1">)) { 
+                        updateAccount(BDD_user)</span><span class="s0">;</span><span class="s1"> 
+                    } </span><span class="s0">else </span><span class="s1">{ 
+                        </span><span class="s0">return true;</span><span class="s1"> 
+                    } 
+                } 
+            } 
+            con.close()</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">catch</span><span class="s1">(Exception e){ 
+            System.out.println(e)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        </span><span class="s0">return false;</span><span class="s1"> 
+    } 
+} 
+ 
+ 
+</span></pre>
+</body>
+</html>
