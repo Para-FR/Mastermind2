@@ -1,0 +1,17 @@
+
+On va imaginer les paires de chiffres suivants : 1-2, 3-4, 5-6 et 7-8
+Nous allons chercher à tour de rôle le nombre d'apparition de chaque couple. Une fois que la somme des réponses de l'utilisateur est égale à 5, nous passons à l'étape suivante.
+
+On doit maintenant chercher les paires de chiffres qui ne sont pas présentes. On crée des objets couleurs contenant ces couleurs que l'on met dans un tableau d'objet, que l'on peut nommer "tabMauvaiseCouleur". Ces objets vous nous servir à isoler d'autres chiffres
+
+On propose ensuite chaque nombre impair de chaque paire sauf celles absentes, avec des chiffres que l'on sait absents par exemple : s'il n'y a pas de 3, on proposera 33111 puis 33555 puis 33777.
+
+On peut maintenant déduire le nombre d'apparition pour chaque chiffre ainsi que leur position approximative. On va découper la chaine à trouver en 2: les 2 premiers chiffre et les 3 derniers. Par exemple si le couple 1-2 apparait 3 fois et 1 apparait 1 fois, on peut déduire que 2 est présent 2 fois dans le code. Pour déduire les positions, commençons par les nombres impairs
+
+si 11222 a donné 2MP et 1BP
+et 33111 a donné 1BP et 0MP on peut en déduire que le 1 est présent dans la deuxième moitité. il faisait donc partie des mal placés du 11222. Donc il y a un 2 en position {1,2} et un autre 2 en position {3,4,5}. On applique ça pour chaque paire. Une fois celà fait, on rempli avec les 9. C'est à dire que si l'on a trouvé 2 chiffres dans la première moitié et 2 autres chiffres dans la seconde, il manque un chiffre dans la seconde moitié, on considère donc que c'est un 9.
+
+Nous allons maintenant chercher l'emplacement des 2 premiers chiffres et remplir la deuxième moitié par un chiffre que l'on sait absent. Si le résultat entré par l'utilisateur est 2MP, alors il faut intervertir les 2, sinon, ils étaient biens placés.
+
+Pour la dernière moitié, aucune stratégie n'a été jugée efficace et réalisable. Il a donc été retenu de mélanger les 3 derniers chiffres de manière aléatoire en faisant attention que chaque itération est unique.
+Si le programme n'a pas réussi à trouver dans le nombre de tour imparti, il demandera une rallonge de tour, que l'utilisateur peut refuser.

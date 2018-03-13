@@ -1,0 +1,90 @@
+Par défaut, le programme va essayer de ce connecter à mysql et se connecter en tant que root avec un mot de passe vide, s'il n'arrive pas à se connecter, il va vous demander  le nom d'utilisateur et le mot de passe de la BDD.
+
+Le programme doit demander à l'utilisateur son pseudo. On verifie si le pseudo est présent dans la BDD, si ce n'est pas le cas, il faut redemander le pseudo. S'il est présent, on demande à l'utilisateur le mot de passe et on le compare à celui dans la BDD. On lui affiche maintenant le menu.
+----------------------------------------------------------------------------
+Master mind: Bienvenue 
+1 : Je choisis la combinaison, vous jouez.
+2 : Vous choisissez la combinaison, je joue.
+3 : Afficher votre profil.
+4 : Modifier vos informations.
+5 : Afficher les statistiques.
+6 : Quitter
+----------------------------------------------------------------------------
+1:cf JoueurCherche
+2:cf OrdiCherche
+3: 
+Les informations de l'utilisateur sont affichés en se basant sur la base de donné
+--------------------------------------------------
+Voici vos informations personnelles: 
+Votre nom: Deshairs
+Votre prénom: Tommy
+Votre pseudo: Tom12
+Votre email: tom@gmail.com
+Votre date de naissance: 1996-06-06
+Votre mot de passe reste protégé ...
+-------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+bool connected=database.testConnect();
+TANT QUE(!connected)
+afficher("entrer user")
+user=READ()
+password=READ()
+connected = database.connect()
+SI(!connected) alors
+print("identSIiants incorrects")
+END SI
+END TANT QUE;
+
+database.createBDD();
+database.connectBDD();
+database.createUsersTable();
+database.createStatsTable();
+
+bool leave = true;
+
+TANT QUE(leave)
+PRINT("Master mind: Bienvenue " + theNick);
+PRINT("1 : Je choisis la combinaison, vous jouez.");
+PRINT("2 : Vous choisissez la combinaison, je joue.");
+PRINT("3 : Afficher votre profil.");
+PRINT("4 : ModSIier vos informations.");
+PRINT("5 : Afficher les statistiques.");
+PRINT("6 : Quitter");
+choix= READ();
+
+SI(choix=="1") ALORS
+JoueurCherche();
+END SI
+
+SI(choix=="2") ALORS
+OrdiCherche();
+END SI;
+
+SI(choix=="3") ALORS
+PrintProfil();
+END SI;
+
+SI(choix=="4") ALORS
+ModSIProfil();
+END SI;
+
+SI(choix=="5") ALORS
+PrintStat();
+END SI;
+
+SI(choix=="6") ALORS
+leave=true;
+END SI;
+END TANT QUE;
+
+
